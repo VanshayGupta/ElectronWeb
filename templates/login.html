@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset = "UTF-8">
+      <title>Google Alerts</title>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="../static/css/result.css">
+      <link rel="stylesheet" href="../static/css/login.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+   </head>
+   
+   <body>
+    <div id="mainDiv">
+      <h1>LOGIN</h1>
+      <div id="loginForm">
+          <div class="form-group">
+              <p class="inputTitle">Username</p>
+            <input id="username" name="username" class="form-control" type="text" id="username" placeholder="Username" required>
+          </div>
+          <div class="form-group"> 
+            <p class="inputTitle">Password</p>
+            <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+          </div>
+          <button class="btn btn-primary" onclick="loginUser()">Sign In</button>
+      </div>
+      <p class="bottom">Don't have an account?  <a class="bottom" href="register.html"> Sign Up</a></p>
+    </div>
+
+    <script>
+      
+      function loginUser() {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        var mysql = require('mysql');
+        var config = require("../db-config");
+
+        var connection = mysql.createConnection(config.db);
+
+        // connect to mysql
+        connection.connect(function (err) {
+            // in case of error
+            if (err) {
+                console.log(err.code);
+                console.log(err.fatal);
+            }
+        });
+
+
+        $query= (`SELECT user_id FROM accounts WHERE username="${username}" AND password="${password}"`);
+
+        connection.query($query, function (err, rows, fields) {
+            if (err) {
+                console.log("An error occurred performing the query.");
+                console.log(err);
+                return;
+            }
+            if(rows.length==0){
+              alert("Incorrect username or password!")
+            }
+            
+            else{
+              console.log(rows)
+              var user_id=(rows[0]['user_id'])
+              sessionStorage.setItem("username", username)
+              sessionStorage.setItem("user_id", user_id)
+              const { ipcRenderer } = require('electron')
+              ipcRenderer.send('username', username);
+              console.log("Query successfully executed");
+              window.location.href="index.html"
+            }
+        });
+
+        connection.end(function () {
+            // The connection has been closed
+        });
+
+      }
+    </script>
+  </body>
+</html>
+
+
+
+
+
+

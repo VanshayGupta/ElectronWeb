@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset = "UTF-8">
+      <title>Google Alerts</title>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="../static/css/result.css">
+      <link rel="stylesheet" href="../static/css/login.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+   </head>
+   
+   <body>
+    <div id="mainDiv">
+      <h1>REGISTER</h1>
+      <div id="loginForm">
+        <div class="form-group">
+          <p class="inputTitle">Username</p>
+          <input id="username" name="username" class="form-control" type="text" id="username" placeholder="Username" required>
+        </div>
+        <div class="form-group"> 
+          <p class="inputTitle">Password</p>
+          <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+        </div>
+        <div class="form-group"> 
+          <p class="inputTitle">Email Address</p>
+          <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
+        </div>
+        <button class="btn btn-primary" onclick="registerUser()">Sign Up</button>
+      </div>
+      <p class="bottom">Already have an account?  <a class="bottom" href="login.html"> Sign In</a></p>
+    </div>
+
+    <script>
+      function registerUser() {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        var email = document.getElementById('email').value;
+
+        var mysql = require('mysql');
+        var config = require("../db-config");
+
+        var connection = mysql.createConnection(config.db);
+
+        // connect to mysql
+        connection.connect(function (err) {
+            // in case of error
+            if (err) {
+                console.log(err.code);
+                console.log(err.fatal);
+            }
+        });
+
+        console.log((`SELECT * FROM accounts WHERE username="${username}"`))
+        $query= (`SELECT * FROM accounts WHERE username="${username}"`);
+
+        connection.query($query, function (err, rows, fields) {
+          if (err) {
+              console.log("An error occurred performing the query.");
+              console.log(err);
+              return;
+          }
+          console.log(rows)
+          console.log(rows.length)
+        
+        if (rows.length==0) {
+          $query = 'INSERT INTO accounts(username, password, email) VALUES ("' + username + '", "' + password + '", "' + email + '");';
+
+          connection.query($query, function (err, rows, fields) {
+            if (err) {
+              console.log("An error occurred performing the query.");
+              console.log(err);
+              return;
+            }
+            alert("User successfully registered!")
+              console.log("Query successfully executed");
+          });
+        }
+
+        else {
+          alert("Username already exists!")
+        }
+        
+        connection.end(function () {
+            // The connection has been closed
+        });
+
+      })
+      }
+    </script>
+  </body>
+</html>
+
+
+
+

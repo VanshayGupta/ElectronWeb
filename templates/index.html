@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset = "UTF-8">
+      <title>Google Alerts</title>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="../static/css/index.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+   </head>
+   
+   <body>
+    <div id="mainDiv">
+        <h1 id="username">Welcome username</h1>
+
+        <h1 id="heading">SEARCH FOR A QUERY</h1>
+        <form class="submitQuery" id="submitQuery">
+            <div class="form-group">
+                <input type="text" class="form-control" name="query" id="query" placeholder="Enter query">
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="1-day" name="max-time" value="24" checked>
+                <label for="1-day">Daily</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="1-week" name="max-time" value="168">
+                <label for="1-week">Weekly</label><br>
+            </div class="form-check-inline">    
+            
+            <br><br>
+            <button class="btn btn-outline-primary" type="submit" value="submit" id="submit"> Search </button> 
+            <button class="btn btn-outline-primary" id="saveQuery"> Save Query </button>         
+        </form>
+        <br>
+        <button id="logout" class="btn btn-primary">Logout</button>
+    </div>
+    <h1 id="queryHead">Saved Queries</h1>
+    <div id="displayQueries"></div>
+    <script src="../static/js/main.js"></script>
+   </body>
+</html>
